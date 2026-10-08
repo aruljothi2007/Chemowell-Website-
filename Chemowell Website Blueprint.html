@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chemowell Website </title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  --bg:#f7f5fc; --surface:#ffffff; --ink:#2a2740; --muted:#625f7a;
+  --lav:#e6e0f7; --blue:#dcebf7; --green:#dcf1e3; --line:#d9d4ea;
+  --accent:#5b4b9a; --danger:#b01030; --danger-ink:#fff;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#17152a; --surface:#221f3b; --ink:#ece9fa; --muted:#aaa6c6;
+    --lav:#312c5a; --blue:#1f3550; --green:#1f4234; --line:#3a3562; --accent:#b9aaf5; --danger:#d8213f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17152a; --surface:#221f3b; --ink:#ece9fa; --muted:#aaa6c6;
+  --lav:#312c5a; --blue:#1f3550; --green:#1f4234; --line:#3a3562; --accent:#b9aaf5; --danger:#d8213f;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 "Atkinson Hyperlegible",system-ui,sans-serif;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.2;margin:0 0 .5em}
+h1{font-size:clamp(2.2rem,7vw,3.8rem)}
+h2{font-size:clamp(1.6rem,4.5vw,2.2rem)}
+h3{font-size:1.25rem}
+p{margin:0 0 1em;max-width:62ch}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+section{padding:56px 0}
+.hero{padding:56px 0 32px}
+.hero p.lead{font-size:1.25rem;color:var(--muted)}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px}
+.panel.lav{background:var(--lav)} .panel.blue{background:var(--blue)} .panel.green{background:var(--green)}
+.panel p:last-child{margin-bottom:0}
+.hero-grid{display:grid;gap:32px;grid-template-columns:1.2fr 1fr;align-items:center}
+@media(max-width:760px){.hero-grid{grid-template-columns:1fr}}
+
+/* check-in demo */
+.phone{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:22px;max-width:360px;margin:0 auto;width:100%}
+.phone small{color:var(--muted)}
+.bar{height:8px;background:var(--lav);border-radius:99px;margin:10px 0 22px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.q{font-family:Fraunces,Georgia,serif;font-size:1.5rem;margin:0 0 16px;min-height:2.4em}
+.opts{display:grid;gap:10px}
+.opts button{font:inherit;font-size:1.1rem;padding:16px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;text-align:left}
+.opts button:hover{border-color:var(--accent)}
+.opts button.alert{border-color:var(--danger)}
+.note{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--green);font-size:1rem}
+.note.warn{background:var(--danger);color:var(--danger-ink)}
+.reset{margin-top:14px;font:inherit;background:none;border:none;color:var(--accent);text-decoration:underline;cursor:pointer;padding:6px 0}
+
+/* table */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:16px 18px;vertical-align:top;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+th{background:var(--lav);font-family:Fraunces,Georgia,serif;font-weight:600}
+td:first-child{font-weight:700;white-space:nowrap}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.sw{padding:10px 16px;border-radius:99px;font-size:.95rem;color:#2a2740}
+ul.clean{padding-left:1.1em;margin:0}
+ul.clean li{margin-bottom:.6em}
+footer{padding:32px 0 8px;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
+
+/* emergency */
+.sos{position:fixed;left:0;right:0;bottom:0;z-index:10;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg) 40%)}
+.sos a{display:block;max-width:560px;margin:0 auto;text-align:center;background:var(--danger);color:var(--danger-ink);text-decoration:none;font-weight:700;font-size:1.2rem;padding:18px;border-radius:16px}
+</style>
+</head>
+<body>
+
+<header class="wrap hero">
+  <div class="hero-grid">
+    <div>
+      <h1>Chemowell</h1>
+      <p class="lead">A daily treatment tracker for people having chemotherapy at home. Built to be simple, clear and safe, because patients often face severe fatigue, "chemo brain" and anxiety.</p>
+      <p>This blueprint sets out the structure, the daily metrics and the design rules for the platform.</p>
+    </div>
+    <div class="phone" id="demo" aria-label="Sample daily check-in">
+      <small>Sample daily check-in</small>
+      <div class="bar" aria-hidden="true"><i id="prog"></i></div>
+      <p class="q" id="q" aria-live="polite"></p>
+      <div class="opts" id="opts"></div>
+      <div id="out"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="architecture">
+  <div class="wrap">
+    <h2>Recommended website architecture</h2>
+    <p>Two distinct experiences: an ultra-simple dashboard for patients and a trend-focused portal for caregivers and oncologists.</p>
+    <div class="grid">
+      <div class="panel lav"><h3>Landing page</h3><p>Public-facing entry point with login, assurances about secure authentication, and onboarding instructions for new patients.</p></div>
+      <div class="panel blue"><h3>Patient dashboard</h3><p>The main screen. A quick daily symptom check-in, medication reminders and simple visual progress trends.</p></div>
+      <div class="panel green"><h3>Caregiver / doctor portal</h3><p>A separate interface for secure, permission-based viewing of data, trend analysis and automated threshold alerts.</p></div>
+      <div class="panel"><h3>Resources &amp; emergency hub</h3><p>Easy-to-find documentation and a prominent one-click way to contact the on-call oncology nurse.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="data">
+  <div class="wrap">
+    <h2>Core data to track daily</h2>
+    <p>Forms use large buttons, sliders and visual scales instead of typing.</p>
+    <div class="scroll" role="region" aria-label="Daily metrics table" tabindex="0">
+      <table>
+        <thead><tr><th>Category</th><th>Metrics</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Vital signs</td><td>Body temperature, weight, blood pressure</td><td>Fever is a critical emergency for neutropenic patients (low white blood cells). A sudden drop in weight can point to dehydration or malnutrition.</td></tr>
+          <tr><td>Symptom severity</td><td>Nausea, fatigue, pain, diarrhea, constipation</td><td>Shows how well treatment is tolerated and whether supportive care medications are working.</td></tr>
+          <tr><td>Medication</td><td>Oral chemo doses, steroids, anti-nausea pills</td><td>Keeps complex medication schedules and chemotherapy cycles on track.</td></tr>
+          <tr><td>Hydration</td><td>Fluid intake (glasses of water), meals eaten</td><td>Dehydration is a leading cause of emergency hospital readmission during active chemotherapy.</td></tr>
+          <tr><td>Wellbeing</td><td>Mood, anxiety level, sleep quality and duration</td><td>Tracks the psychological and physical toll of chemotherapy on sleep and emotional health.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="design">
+  <div class="wrap">
+    <h2>Design and UX principles</h2>
+    <div class="grid">
+      <div class="panel"><h3>Chemo-brain friendly layout</h3><p>Massive touch-friendly buttons, a single vertical column, and one simple question per screen to avoid overload.</p></div>
+      <div class="panel">
+        <h3>Smart color coding</h3>
+        <p>Soft, calming colors for daily logging. Deep crimson is reserved for danger signs only.</p>
+        <div class="swatches" aria-hidden="true">
+          <span class="sw" style="background:#e6e0f7">Lavender</span>
+          <span class="sw" style="background:#dcebf7">Pale blue</span>
+          <span class="sw" style="background:#dcf1e3">Pastel green</span>
+          <span class="sw" style="background:#b01030;color:#fff">Danger only</span>
+        </div>
+      </div>
+      <div class="panel"><h3>One-touch emergency button</h3><p>A persistent, highly visible "Call My Care Team" button on every view. It is pinned to the bottom of this page as an example.</p></div>
+      <div class="panel"><h3>Offline functionality</h3><p>Service worker caching lets patients who are traveling or have spotty internet save entries on the device and sync when they reconnect.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tech">
+  <div class="wrap">
+    <h2>Technical implementation ideas</h2>
+    <div class="grid">
+      <div class="panel blue"><h3>No-code / low-code prototype</h3><p>Use a rapid tool such as Bubble or Glide with an Airtable backend to build a working, responsive MVP with user login.</p></div>
+      <div class="panel lav"><h3>HIPAA / GDPR standards</h3><p>This is highly private health data, so use end-to-end encryption and secure platforms such as Supabase or AWS.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <p>For informational purposes only. For medical advice or diagnosis, consult a professional.</p>
+</footer>
+
+<div class="sos"><a href="tel:" aria-label="Call My Care Team">Call My Care Team</a></div>
+
+<script>
+(function(){
+  var steps=[
+    {q:"What is your temperature today?",o:[["Under 38°C / 100.4°F",0],["38°C / 100.4°F or higher",1]]},
+    {q:"How is your nausea?",o:[["None",0],["Mild",0],["Strong",0]]},
+    {q:"How many glasses of water so far?",o:[["0–2",0],["3–5",0],["6 or more",0]]},
+    {q:"How is your mood?",o:[["Good",0],["Okay",0],["Low",0]]}
+  ];
+  var i=0,q=document.getElementById("q"),o=document.getElementById("opts"),out=document.getElementById("out"),p=document.getElementById("prog");
+  function show(){
+    out.innerHTML="";o.innerHTML="";
+    if(i>=steps.length){
+      q.textContent="All done for today.";p.style.width="100%";
+      out.innerHTML='<div class="note">Thank you. Your care team can see today\'s entry.</div><button class="reset" type="button">Try again</button>';
+      out.querySelector(".reset").onclick=function(){i=0;show()};return;
+    }
+    var s=steps[i];q.textContent=s.q;p.style.width=(i/steps.length*100)+"%";
+    s[ "o" ].forEach(function(x){
+      var b=document.createElement("button");b.type="button";b.textContent=x[0];
+      if(x[1])b.className="alert";
+      b.onclick=function(){
+        if(x[1]){
+          o.innerHTML="";q.textContent="Please call your care team now.";
+          out.innerHTML='<div class="note warn">A fever can be an emergency during chemotherapy. Use the red button below.</div><button class="reset" type="button">Back to start</button>';
+          out.querySelector(".reset").onclick=function(){i=0;show()};return;
+        }
+        i++;show();
+      };
+      o.appendChild(b);
+    });
+  }
+  show();
+})();
+</script>
+</body>
+</html>
